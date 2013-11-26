@@ -9,6 +9,8 @@ describe Quandl::Format::Node do
     name:           'Test Dataset Name 2',
     description:    "Here is a description with multiple lines.\n This is the second line.",
     column_names:   ['Date', 'Value', 'High', 'Low'],
+    private:        false,
+    display_url:    'http://test.com/',
     data:           [["2013-11-20", "9.99470588235294", "11.003235294117646", "14.00164705882353"], 
                     ["2013-11-19", "10.039388096885814", nil, "14.09718770934256"]], 
   }}
@@ -31,6 +33,8 @@ name: Test Dataset Name 2
 description: |-
   Here is a description with multiple lines.
    This is the second line.
+private: false
+display_url: http://test.com/
 -
 Date,Value,High,Low
 2013-11-20,9.99470588235294,11.003235294117646,14.00164705882353

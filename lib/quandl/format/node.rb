@@ -1,7 +1,25 @@
 class Quandl::Format::Node
   
-  ATTRIBUTES = :source_code, :code, :name, :description, :column_names, :data
-  attr_accessor *ATTRIBUTES
+  META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :display_url
+  DATA_ATTRIBUTES = :column_names, :data
+  
+  attr_accessor *( META_ATTRIBUTES + DATA_ATTRIBUTES )
+
+  class << self
+    
+    def attribute_names
+      @attribute_names ||= meta_attribute_names + data_attribute_names
+    end
+    
+    def meta_attribute_names
+      META_ATTRIBUTES
+    end
+    
+    def data_attribute_names
+      DATA_ATTRIBUTES
+    end
+    
+  end
 
   def initialize(attrs)
     assign_attributes(attrs)
@@ -11,14 +29,6 @@ class Quandl::Format::Node
     attrs.each do |key, value|
       self.send("#{key}=", value) if self.respond_to?(key)
     end
-  end
-
-  def attributes
-    ATTRIBUTES.inject({}){|m,k| m[k] = self.send(k); m }
-  end
-
-  def inspect
-    "<##{self.class.name} #{attributes.to_s} >"
   end
 
   def full_code=(value)
@@ -46,6 +56,18 @@ class Quandl::Format::Node
 
   def to_qdf
     Quandl::Format::Dump.node(self)
+  end
+
+  def meta_attributes
+    self.class.meta_attribute_names.inject({}){|m,k| m[k] = self.send(k); m }
+  end
+
+  def attributes
+    self.class.attribute_names.inject({}){|m,k| m[k] = self.send(k); m }
+  end
+
+  def inspect
+    "<##{self.class.name} #{meta_attributes.to_s} >"
   end
   
 end
