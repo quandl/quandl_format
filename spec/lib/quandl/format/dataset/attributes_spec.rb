@@ -7,15 +7,4 @@ describe Quandl::Format::Dataset::Attributes do
   
   subject{ Quandl::Format::Dataset.new( attributes ) }
   
-  it{ should respond_to :valid? }
-  it{ should respond_to :upload }
-
-  its(:valid?){ should be_false }
-  
-  context "without attributes" do
-    subject{ Quandl::Format::Dataset.new }
-    its(:valid?){ should be_false }
-    its(:upload){ should be_false }
-  end
-  
 end

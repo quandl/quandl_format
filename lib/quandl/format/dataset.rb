@@ -9,7 +9,10 @@ class Dataset
   
   # concerns
   require_relative 'dataset/attributes'
+  require_relative 'dataset/client'
+  
   include Quandl::Format::Dataset::Attributes
+  include Quandl::Format::Dataset::Client
 
   class << self
 
@@ -26,6 +29,7 @@ class Dataset
     end
 
   end
+  
 
 end  
 end
