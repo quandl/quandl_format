@@ -12,6 +12,7 @@ require "active_support/core_ext/hash"
 require "active_support/core_ext/object"
 
 require 'quandl/format/dataset'
+require 'quandl/client/dataset/to_qdf'
 
 module Quandl
   module Format
