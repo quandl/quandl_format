@@ -39,7 +39,7 @@ module Attributes
 
   def assign_attributes(attrs)
     attrs.each do |key, value|
-      raise Quandl::Format::Errors::UnknownAttribute unless respond_to?(key)
+      raise_unknown_attribute_error!(key) unless respond_to?(key)
       self.send("#{key}=", value) 
     end
   end
@@ -89,6 +89,14 @@ module Attributes
     end
     %Q{<##{self.class.name} #{attrs.join(', ')}>}
   end
+
+  private
+  
+  def raise_unknown_attribute_error!(key)
+    m = "UnknownAttribute #{key} recognized attributes are: #{self.class.attribute_names}"
+    raise Quandl::Format::Errors::UnknownAttribute, m
+  end
+
 
 end
 

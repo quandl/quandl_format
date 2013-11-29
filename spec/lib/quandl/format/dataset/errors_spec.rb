@@ -20,9 +20,12 @@ describe Quandl::Format::Dataset do
   
   context "invalid_data.qdf" do
     let(:data){ Quandl::Format::Dataset.load( fixtures_data['invalid_data'] ) }
-    
-    it{ expect{data}.to raise_error Quandl::Operation::Errors::UnknownDateFormat }
-    
+    it{ expect{data}.to raise_error Quandl::Operation::Errors::UnknownDateFormat, /Date/ }
+  end
+  
+  context "unknown_attribute.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['unknown_attribute'] ) }
+    it{ expect{data}.to raise_error Quandl::Format::Errors::UnknownAttribute, /this_attribute_does_not_exist/ }
   end
   
 end
