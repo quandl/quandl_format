@@ -16,6 +16,7 @@ describe Quandl::Format::Dataset::Client do
   it{ should respond_to :valid? }
   it{ should respond_to :upload }
 
+  its(:valid?){ should be_true }
   its(:client){ should be_a Quandl::Client::Dataset }
   
   ["string", 10, Date.today, [1,2,3], {hash: 'test'} ].each do |value|
