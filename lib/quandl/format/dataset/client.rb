@@ -7,7 +7,6 @@ module Client
   
   def human_errors
     return if errors.blank?
-    puts errors
     m = "#{client.full_url} #{client.status}\n"
     m += "  errors: \n"
     m += errors.collect do |error_type, messages|
