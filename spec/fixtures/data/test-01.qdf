@@ -1,0 +1,24 @@
+code: "BLAKE_TEST_1"
+name: "A new title"
+description: "The description Date, Open, High"
+private: false
+-
+Date,Open,High,Low,Last,Close,Total Trade Quantity,Turnover (Lacs)
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41
+2013-11-21,452.25,457.75,449.1,451.2,451.0,218881.0,992.94
+
+code: "BLAKE_TEST_2"
+name: "A new title"
+description: "The description Date, Open, High"
+-
+Date,Open,High,Low,Last,Close,Total Trade Quantity,Turnover (Lacs)
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41
+2013-11-21,452.25,457.75,449.1,451.2,451.0,218881.0,992.94
+
+code: "BLAKE_TEST_3"
+name: "A new title"
+description: "The description Date, Open, High"
+-
+Date,Open,High,Low,Last,Close,Total Trade Quantity,Turnover (Lacs)
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41
+2013-11-21,452.25,457.75,449.1,451.2,451.0,218881.0,992.94

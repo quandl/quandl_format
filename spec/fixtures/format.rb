@@ -1,3 +1,13 @@
+def fixtures_data
+  return @fixtures_data if @fixtures_data
+  @fixtures_data = {}
+  Dir.glob( File.join( File.dirname(__FILE__), 'data/**/*.qdf' ) ).each{|f|
+    name = File.basename(f, '.qdf').to_s
+    @fixtures_data[name] = File.read(f)
+  }
+  @fixtures_data
+end
+
 def qdf_format
 %Q{
 # first dataset

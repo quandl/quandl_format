@@ -5,7 +5,7 @@ class Quandl::Format::Dataset::Load
   class << self
   
     def file(path)
-      from_string(File.read(path).strip)
+      string(File.read(path).strip)
     end
   
     def string(input)

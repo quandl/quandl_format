@@ -5,6 +5,11 @@ describe Quandl::Format::Dataset::Load do
   
   let(:format){ qdf_format }
   
+  describe ".file" do
+    subject{ Quandl::Format::Dataset::Load.file('spec/fixtures/data/test-01.qdf') }
+    its(:count){ should eq 3 }
+  end
+  
   describe ".string" do
     
     let(:collection){ Quandl::Format::Dataset::Load.string(format) }
