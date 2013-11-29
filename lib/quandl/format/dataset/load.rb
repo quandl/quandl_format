@@ -69,13 +69,13 @@ class Quandl::Format::Dataset::Load
     
     def node_to_dataset(node, index)
       Quandl::Format::Dataset.new( node[:attributes] )
-    rescue # Quandl::Format::Errors::UnknownAttribute => e
+    rescue => e# Quandl::Format::Errors::UnknownAttribute => e
       message = "Error: Dataset #{index + 1}\n"
       message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
       message += node[:attributes][:code] + "\n"
       message += "#{$!}\n"
       message += "--"
-      Quandl::Logger.error(message)
+      Quandl::Logger.error(message, e)
       nil
       # raise $!, message, $!.backtrace
     end
