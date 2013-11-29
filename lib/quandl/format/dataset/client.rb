@@ -26,21 +26,20 @@ module Client
   end
   
   def upload
+    assign_client_attributes
     client.save if valid?
-  end
-  
-  def valid?
-    client.valid_with_server?
   end
   
   def errors
     client.error_messages
   end
   
+  def valid?
+    client.valid_with_server?
+  end
+  
   def client
     @client ||= find_or_build_client
-    @client.assign_attributes(attributes)
-    @client
   end
   def client=(value)
     raise ArgumentError, "Expected Quandl::Client::Dataset received #{value.class}" unless value.is_a?(Quandl::Client::Dataset)
@@ -49,6 +48,10 @@ module Client
   
   
   protected
+  
+  def assign_client_attributes
+    client.assign_attributes(attributes)
+  end
   
   def find_or_build_client
     @client = Quandl::Client::Dataset.find(full_code)
