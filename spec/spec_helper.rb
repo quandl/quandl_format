@@ -3,6 +3,7 @@ if ENV['COVERAGE']
   SimpleCov.start
 end
 
+Dir.glob( File.join( File.dirname(__FILE__), 'fixtures/**/*.rb' ) ).each{|f| require(f) }
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require "rspec"
