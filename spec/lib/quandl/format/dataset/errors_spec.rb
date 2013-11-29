@@ -2,10 +2,11 @@
 require 'spec_helper'
 
 describe Quandl::Format::Dataset do
+  subject{ data }
   context "valid.qdf" do
     let(:data){ Quandl::Format::Dataset.load( fixtures_data['valid'] ) }
     
-    subject{ data }
+    it{ should be_a Array }
     its(:count){ should eq 3 }
     
     describe "#first" do
