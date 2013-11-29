@@ -31,9 +31,10 @@ module Attributes
       attr_writer name unless method_defined?("#{name}=")
     end
   end
-
-  def initialize(attrs)
-    assign_attributes(attrs)
+  
+  def initialize(*args)
+    attrs = args.extract_options!
+    assign_attributes(attrs) if attrs.is_a?(Hash)
   end
 
   def assign_attributes(attrs)
@@ -78,7 +79,14 @@ module Attributes
   end
 
   def inspect
-    "<##{self.class.name} #{meta_attributes.to_s} >"
+    attrs = attributes.collect do |key, value|
+      if value.is_a?(String)
+        value = "#{value[0..20]}..." if value.length > 20
+        value = "'#{value}'"
+      end
+      "#{key}: #{value}"
+    end
+    %Q{<##{self.class.name} #{attrs.join(', ')}>}
   end
 
 end
