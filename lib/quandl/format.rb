@@ -4,7 +4,7 @@ require "quandl/format/version"
 
 require 'csv'
 
-require 'quandl/operation'
+require 'quandl/client'
 
 require "active_support"
 require "active_support/inflector"

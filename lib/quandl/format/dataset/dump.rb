@@ -1,8 +1,5 @@
-module Quandl
-module Format
-
-class Dump
-
+class Quandl::Format::Dataset::Dump
+  
   class << self
 
     def nodes(*args)
@@ -44,7 +41,4 @@ class Dump
     node.column_names.to_csv if node.column_names.present?
   end
 
-end
-
-end
 end

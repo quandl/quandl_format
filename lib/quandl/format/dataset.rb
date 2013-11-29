@@ -1,4 +1,7 @@
-class Quandl::Format::Node
+class Quandl::Format::Dataset
+  
+  require_relative 'dataset/load'
+  require_relative 'dataset/dump'
   
   META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :display_url
   DATA_ATTRIBUTES = :column_names, :data

@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry"
   s.add_development_dependency "simplecov"
   
-  s.add_runtime_dependency "quandl_operation", "~> 0.2"
+  s.add_runtime_dependency "quandl_client", "~> 2.2"
   
 end

@@ -1,4 +1,4 @@
-class Quandl::Format::Load
+class Quandl::Format::Dataset::Load
   
   SECTION_DELIMITER = '-'
   
