@@ -7,6 +7,4 @@ describe Quandl::Format::Dataset::Attributes do
   
   subject{ Quandl::Format::Dataset.new( attributes ) }
   
-  its(:full_url){ should eq "http://localhost:3000/api/v2/SOURCE_CODE/DATASET_CODE_2" }
-  
 end
