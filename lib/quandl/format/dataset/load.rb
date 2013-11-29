@@ -4,11 +4,11 @@ class Quandl::Format::Dataset::Load
   
   class << self
   
-    def from_file(path)
+    def file(path)
       from_string(File.read(path).strip)
     end
   
-    def from_string(input)
+    def string(input)
       nodes = []
       section_type = :data
       input.each_line do |rline|
@@ -57,7 +57,7 @@ class Quandl::Format::Dataset::Load
     
     def initialize_nodes(nodes)
       nodes.collect do |node|
-        Quandl::Format::Node.new(node[:attributes])
+        Quandl::Format::Dataset.new( node[:attributes] )
       end
     end
     

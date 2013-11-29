@@ -2,20 +2,20 @@ class Quandl::Format::Dataset::Dump
   
   class << self
 
-    def nodes(*args)
-      Array(args).flatten.collect{|r| node(r) }.join("\n")
+    def collection(*args)
+      Array(args).flatten.collect{|r| record(r) }.join("\n")
     end
 
-    def node(node)
-      self.new(node).to_qdf
+    def record(record)
+      self.new(record).to_qdf
     end
 
   end
 
-  attr_accessor :node
+  attr_accessor :record
 
   def initialize(r)
-    self.node = r
+    self.record = r
   end
 
   def to_qdf
@@ -27,18 +27,18 @@ class Quandl::Format::Dataset::Dump
   end
 
   def meta_attributes
-    node.meta_attributes.stringify_keys.to_yaml[4..-1] + "-\n"
+    record.meta_attributes.stringify_keys.to_yaml[4..-1] + "-\n"
   end
   
   def data
-    data = node.data
+    data = record.data
     data = data.collect(&:to_csv).join if data.is_a?(Array) && data.first.respond_to?(:to_csv)
     data = data.to_csv if data.respond_to?(:to_csv)
     data
   end
 
   def column_names
-    node.column_names.to_csv if node.column_names.present?
+    record.column_names.to_csv if record.column_names.present?
   end
 
 end
