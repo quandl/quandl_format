@@ -39,7 +39,8 @@ module Attributes
 
   def assign_attributes(attrs)
     attrs.each do |key, value|
-      self.send("#{key}=", value) if self.respond_to?(key)
+      raise Quandl::Format::Errors::UnknownAttribute unless respond_to?(key)
+      self.send("#{key}=", value) 
     end
   end
 
@@ -59,7 +60,7 @@ module Attributes
 
   def data=(rows)
     self.column_names = rows.shift unless rows.first.collect{|r| r.to_s.numeric? }.include?(true)
-    @data = rows
+    @data = Quandl::Data.new(rows).to_date
   end
 
   def column_names=(names)

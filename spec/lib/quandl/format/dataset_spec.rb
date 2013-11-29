@@ -17,5 +17,5 @@ describe Quandl::Format::Dataset do
   its(:attributes){ should eq attributes }
   
   its(:to_qdf){ should eq qdf_attributes_to_format }
-
+  
 end
