@@ -43,6 +43,10 @@ module Attributes
       self.send("#{key}=", value) 
     end
   end
+  
+  def full_url
+    File.join(Quandl::Client::Dataset.url, full_code)
+  end
 
   def full_code=(value)
     value = value.split('/')
