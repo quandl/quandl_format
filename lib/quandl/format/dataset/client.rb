@@ -26,7 +26,6 @@ module Client
   end
   
   def upload
-    assign_client_attributes
     client.save if valid?
   end
   
@@ -35,6 +34,7 @@ module Client
   end
   
   def valid?
+    assign_client_attributes
     client.valid_with_server?
   end
   

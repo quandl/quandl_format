@@ -11,7 +11,7 @@ class Quandl::Format::Dataset::Load
     def string(input)
       nodes = parse_string(input)
       nodes = parse_yaml_and_csv(nodes)
-      nodes = initialize_datasets(nodes)
+      nodes = nodes_to_datasets(nodes)
       nodes
     end
     
@@ -58,10 +58,11 @@ class Quandl::Format::Dataset::Load
       end
     end
     
-    def initialize_datasets(nodes)
+    def nodes_to_datasets(nodes)
       datasets = []
       nodes.each_with_index do |node, index|
-        datasets << node_to_dataset(node, index)
+        dataset = node_to_dataset(node, index)
+        datasets << dataset if dataset
       end
       datasets
     end
@@ -69,11 +70,14 @@ class Quandl::Format::Dataset::Load
     def node_to_dataset(node, index)
       Quandl::Format::Dataset.new( node[:attributes] )
     rescue # Quandl::Format::Errors::UnknownAttribute => e
-      message = "Dataset #{index}\n"
+      message = "Error: Dataset #{index + 1}\n"
       message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
       message += node[:attributes][:code] + "\n"
       message += "#{$!}\n"
-      raise $!, message, $!.backtrace
+      message += "--"
+      Quandl::Logger.error(message)
+      nil
+      # raise $!, message, $!.backtrace
     end
     
     def attribute_format
