@@ -8,7 +8,7 @@ module Attributes
 
   module ClassMethods
 
-    META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :display_url
+    META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :reference_url
     DATA_ATTRIBUTES = :column_names, :data
 
     def attribute_names
