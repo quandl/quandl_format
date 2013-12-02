@@ -29,4 +29,9 @@ describe Quandl::Format::Dataset do
     it{ expect{data}.to raise_error Quandl::Format::Errors::UnknownAttribute, /this_attribute_does_not_exist/ }
   end
   
+  context "mismatched_columns.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['mismatched_columns'] ) }
+    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /this_attribute_does_not_exist/ }
+  end
+  
 end

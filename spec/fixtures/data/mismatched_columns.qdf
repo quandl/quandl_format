@@ -1,0 +1,20 @@
+code: "BLAKE_TEST_1"
+name: "A new title"
+description: "The description Date, Open, High"
+private: false
+-
+Date,Open,High,Low
+2013-11-22,10,20,30
+2013-11-21,10,20,30,40
+2013-11-20,10,20,30
+
+2013-11-21,452.25,457.75,449.1,451.2,451.0,218881.0,992.94
+
+code: "BLAKE_TEST_2"
+name: "A new title"
+description: "The description Date, Open, High"
+-
+Date,Open,High,Low
+2013-11-22,10,20
+2013-11-22,10,20,30
+2013-11-22,10,20,30
