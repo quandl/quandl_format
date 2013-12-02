@@ -61,6 +61,9 @@ module Attributes
   def data=(rows)
     self.column_names = rows.shift unless rows.first.collect{|r| r.to_s.numeric? }.include?(true)
     @data = Quandl::Data.new(rows).to_date
+    data_row_count_should_match_column_count!
+    data_rows_should_have_equal_columns!
+    @data
   end
 
   def column_names=(names)
@@ -90,7 +93,35 @@ module Attributes
     %Q{<##{self.class.name} #{attrs.join(', ')}>}
   end
 
+  protected
+  
+  def data_rows_should_have_equal_columns!
+    row_count = data[0].count
+    data.each_with_index do |row, index|
+      raise_row_column_mismatch!(row, index) unless row.count == row_count
+    end
+  end
+  
+  def data_row_count_should_match_column_count!
+    return if column_names.blank?
+    column_count = column_names.count
+    data.each_with_index do |row, index|
+      raise_column_count_mismatch!(row, index) unless row.count == column_count
+    end
+  end
+  
+
   private
+  
+  def raise_row_column_mismatch!(row, index)
+    m = "ColumnCountMismatch #{full_code} data[0] had #{data[0].count} columns, but data[#{index}] had #{row.count} #{row}"
+    raise Quandl::Format::Errors::ColumnCountMismatch, m    
+  end
+  
+  def raise_column_count_mismatch!(row, index)
+    m = "ColumnCountMismatch #{full_code} column_names had #{column_names.count} columns, but data[#{index}] had #{row.count} #{row}"
+    raise Quandl::Format::Errors::ColumnCountMismatch, m
+  end
   
   def raise_unknown_attribute_error!(key)
     m = "UnknownAttribute #{key} recognized attributes are: #{self.class.attribute_names}"

@@ -31,7 +31,12 @@ describe Quandl::Format::Dataset do
   
   context "mismatched_columns.qdf" do
     let(:data){ Quandl::Format::Dataset.load( fixtures_data['mismatched_columns'] ) }
-    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /this_attribute_does_not_exist/ }
+    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /column_names had 4 columns/ }
+  end
+  
+  context "mismatched_rows.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['mismatched_rows'] ) }
+    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /had 3 columns/ }
   end
   
 end

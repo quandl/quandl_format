@@ -1,0 +1,7 @@
+code: "BLAKE_TEST_2"
+name: "A new title"
+description: "The description Date, Open, High"
+-
+2013-11-22,10,20
+2013-11-22,10,20,30
+2013-11-22,10,20,30
