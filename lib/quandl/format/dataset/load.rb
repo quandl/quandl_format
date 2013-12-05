@@ -20,7 +20,10 @@ class Quandl::Format::Dataset::Load
     def parse_string(input)
       nodes = []
       section_type = :data
+      line_index = 0
       input.each_line do |rline|
+        # track current line index
+        line_index += 1
         # strip whitespace
         line = rline.strip.rstrip
         # ignore comments and blank lines
@@ -30,7 +33,7 @@ class Quandl::Format::Dataset::Load
         if line =~ attribute_format
           # if we are leaving the data section
           # then this is the start of a new node
-          nodes << { attributes: '', data: '' } if section_type == :data
+          nodes << { attributes: '', data: '', line: line_index } if section_type == :data
           # update the section to attributes
           section_type = :attributes
           
@@ -49,30 +52,46 @@ class Quandl::Format::Dataset::Load
     end
     
     def parse_yaml_and_csv(nodes)
-      nodes.collect do |node|
+      output = []
+      nodes.each do |node|
         # parse attrs as yaml
-        node[:attributes] = YAML.load( node[:attributes] ).symbolize_keys!
+        node[:attributes] = parse_yaml_attributes(node)
+        # we cant continue unless attributes are present
+        next if node[:attributes].blank?
         # parse data as csv
         node[:attributes][:data] = CSV.parse(node[:data])
-        node
+        # onwards
+        output << node
       end
+      output
     end
     
     def nodes_to_datasets(nodes)
       datasets = []
-      nodes.each_with_index do |node, index|
-        dataset = node_to_dataset(node, index)
+      nodes.each do |node|
+        dataset = node_to_dataset(node)
         datasets << dataset if dataset
       end
       datasets
     end
     
-    def node_to_dataset(node, index)
+    def parse_yaml_attributes(node)
+      YAML.load( node[:attributes] ).symbolize_keys!
+    rescue => e
+      message = "Error: Dataset starting at line #{node[:line]}\n"
+      message += "#{$!}\n"
+      message += "--"
+      Quandl::Logger.error(message)
+      nil
+    end
+    
+    def node_to_dataset(node)
       Quandl::Format::Dataset.new( node[:attributes] )
-    rescue => e# Quandl::Format::Errors::UnknownAttribute => e
-      message = "Error: Dataset #{index + 1}\n"
+    rescue => e
+      message = ''
       message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
-      message += node[:attributes][:code] + "\n"
+      message += node[:attributes][:code] + ' '
+      message += "error around line #{node[:line]} \n"
       message += "#{$!}\n"
       message += "--"
       Quandl::Logger.error(message)

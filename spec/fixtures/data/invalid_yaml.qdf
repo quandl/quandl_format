@@ -1,0 +1,20 @@
+name: "A new title"
+code "test"
+description: "The description Date, Open, High"
+private: false
+-
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41
+
+name: "A new title"
+code: "test"
+description: "The description Date, Open, High"
+private: false
+-
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41
+
+name: "A new title"
+description: "The description Date, Open, High"
+private: false
+asomjkl
+-
+2013-11-22,1252.0,454.95,448.2,450.0,450.0,1354405.0,6099.41

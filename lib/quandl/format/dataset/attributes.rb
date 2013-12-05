@@ -82,17 +82,6 @@ module Attributes
     self.class.attribute_names.inject({}){|m,k| m[k] = self.send(k); m }
   end
 
-  def inspect
-    attrs = attributes.collect do |key, value|
-      if value.is_a?(String)
-        value = "#{value[0..20]}..." if value.length > 20
-        value = "'#{value}'"
-      end
-      "#{key}: #{value}"
-    end
-    %Q{<##{self.class.name} #{attrs.join(', ')}>}
-  end
-
   protected
   
   def data_rows_should_have_equal_columns!

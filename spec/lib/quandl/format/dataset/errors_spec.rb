@@ -18,12 +18,13 @@ describe Quandl::Format::Dataset do
       its(:data){ should eq Quandl::Data.new([['2013-11-22','1252.0','454.95','448.2','450.0','450.0','1354405.0','6099.41'],['2013-11-21','452.25','457.75','449.1','451.2','451.0','218881.0','992.94']]) }
     end
   end
-  
+
   expected_errors = [
     { file: 'invalid_data',       error: /UnknownDateFormat/ },
     { file: 'unknown_attribute',  error: /this_attribute_does_not_exist/ },
     { file: 'mismatched_columns', error: /column_names had 4 columns/ },
     { file: 'mismatched_rows',    error: /had 3 columns/ },
+    { file: 'invalid_yaml',       error: /could not find expected ':'/ },
   ]
   # run each expectation
   expected_errors.each do |pair|
