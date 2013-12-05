@@ -1,3 +1,10 @@
+## 0.1.2
+
+* mismatched columns should raise ColumnCountMismatch
+* revise specs to take reference_url instead of display_url
+* revise attribute display_url to reference_url
+
+
 ## 0.1.0
 
 * only update client attrs before upload
