@@ -19,24 +19,18 @@ describe Quandl::Format::Dataset do
     end
   end
   
-  context "invalid_data.qdf" do
-    let(:data){ Quandl::Format::Dataset.load( fixtures_data['invalid_data'] ) }
-    it{ expect{data}.to raise_error Quandl::Operation::Errors::UnknownDateFormat, /Date/ }
-  end
-  
-  context "unknown_attribute.qdf" do
-    let(:data){ Quandl::Format::Dataset.load( fixtures_data['unknown_attribute'] ) }
-    it{ expect{data}.to raise_error Quandl::Format::Errors::UnknownAttribute, /this_attribute_does_not_exist/ }
-  end
-  
-  context "mismatched_columns.qdf" do
-    let(:data){ Quandl::Format::Dataset.load( fixtures_data['mismatched_columns'] ) }
-    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /column_names had 4 columns/ }
-  end
-  
-  context "mismatched_rows.qdf" do
-    let(:data){ Quandl::Format::Dataset.load( fixtures_data['mismatched_rows'] ) }
-    it{ expect{data}.to raise_error Quandl::Format::Errors::ColumnCountMismatch, /had 3 columns/ }
+  expected_errors = [
+    { file: 'invalid_data',       error: /UnknownDateFormat/ },
+    { file: 'unknown_attribute',  error: /this_attribute_does_not_exist/ },
+    { file: 'mismatched_columns', error: /column_names had 4 columns/ },
+    { file: 'mismatched_rows',    error: /had 3 columns/ },
+  ]
+  # run each expectation
+  expected_errors.each do |pair|
+    it "#{pair[:file]}.qdf should error with #{pair[:error]}" do
+      Quandl::Logger.should_receive(:error).at_least(:once).with(pair[:error])
+      Quandl::Format::Dataset.load( fixtures_data[pair[:file]] )
+    end
   end
   
 end

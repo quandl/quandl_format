@@ -14,4 +14,4 @@ require 'pry'
 
 # Replace Quandl::Logger with Spec::Logger that will raise errors sent to #error
 # This allows us to easily test error assertions in spec/lib/quandl/format/errors_spec.rb
-Quandl::Logger.use(Spec::Logger)
+Quandl::Logger.use(Quandl::Logger::Outputs)

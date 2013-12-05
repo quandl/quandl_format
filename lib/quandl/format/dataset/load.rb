@@ -75,9 +75,8 @@ class Quandl::Format::Dataset::Load
       message += node[:attributes][:code] + "\n"
       message += "#{$!}\n"
       message += "--"
-      Quandl::Logger.error(message, e)
+      Quandl::Logger.error(message)
       nil
-      # raise $!, message, $!.backtrace
     end
     
     def attribute_format
