@@ -1,3 +1,11 @@
+## 0.1.4
+
+* Add quandl_babelfish as a runtime_dependency
+* add spec for annual data using Babelfish.clean
+* refactor errors to be general to Quandl::Error
+* switch incoming data to use babelfish. column_names come from babelfish.headers
+
+
 ## 0.1.2
 
 * mismatched columns should raise ColumnCountMismatch
