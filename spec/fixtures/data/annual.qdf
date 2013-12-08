@@ -1,0 +1,10 @@
+code: "ANNUAL_DATA"
+name: "A new title"
+description: "Annual Data"
+private: false
+-
+Date,Open,High
+2013,1252.0,454.95
+2012,452.25,457.75
+2011,452.25,457.75
+2010,452.25,457.75
