@@ -20,7 +20,7 @@ describe Quandl::Format::Dataset do
   end
 
   expected_errors = [
-    { file: 'invalid_data',       error: /UnknownDateFormat/ },
+    { file: 'invalid_data',       error: /Date/ },
     { file: 'unknown_attribute',  error: /this_attribute_does_not_exist/ },
     { file: 'mismatched_columns', error: /column_names had 4 columns/ },
     { file: 'mismatched_rows',    error: /had 3 columns/ },
