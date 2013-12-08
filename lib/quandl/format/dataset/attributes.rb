@@ -104,17 +104,17 @@ module Attributes
   
   def raise_row_column_mismatch!(row, index)
     m = "ColumnCountMismatch #{full_code} data[0] had #{data[0].count} columns, but data[#{index}] had #{row.count} #{row}"
-    raise Quandl::Format::Errors::ColumnCountMismatch, m    
+    raise Quandl::Error::ColumnCountMismatch, m    
   end
   
   def raise_column_count_mismatch!(row, index)
     m = "ColumnCountMismatch #{full_code} column_names had #{column_names.count} columns, but data[#{index}] had #{row.count} #{row}"
-    raise Quandl::Format::Errors::ColumnCountMismatch, m
+    raise Quandl::Error::ColumnCountMismatch, m
   end
   
   def raise_unknown_attribute_error!(key)
     m = "UnknownAttribute #{key} recognized attributes are: #{self.class.attribute_names}"
-    raise Quandl::Format::Errors::UnknownAttribute, m
+    raise Quandl::Error::UnknownAttribute, m
   end
 
 
