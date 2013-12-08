@@ -59,8 +59,8 @@ module Attributes
   end
 
   def data=(rows)
-    self.column_names = rows.shift unless rows.first.collect{|r| r.to_s.numeric? }.include?(true)
-    @data = Quandl::Data.new(rows).to_date
+    @data = Quandl::Babelfish::Data.new(rows).to_date
+    self.column_names = @data.headers if @data.headers.present?
     data_row_count_should_match_column_count!
     data_rows_should_have_equal_columns!
     @data
