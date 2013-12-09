@@ -59,7 +59,7 @@ module Attributes
   end
 
   def data=(rows)
-    @data = Quandl::Babelfish::Data.new(rows).to_date
+    @data = Quandl::Data.new(rows).to_date
     self.column_names = @data.headers if @data.headers.present?
     data_row_count_should_match_column_count!
     data_rows_should_have_equal_columns!
