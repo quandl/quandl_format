@@ -1,3 +1,8 @@
+## 0.1.5
+
+* Replace Quandl::Babelfish::Data with Quandl::Data, now that QD does intelligent cleaning.
+
+
 ## 0.1.4
 
 * Add quandl_babelfish as a runtime_dependency
