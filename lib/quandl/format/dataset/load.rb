@@ -38,7 +38,7 @@ class Quandl::Format::Dataset::Load
           section_type = :attributes
           
           # have we reached the end of the attributes?
-        elsif line[0] == '-'
+        elsif line == '-'
           # update the section to data
           section_type = :data
           # skip to the next line
