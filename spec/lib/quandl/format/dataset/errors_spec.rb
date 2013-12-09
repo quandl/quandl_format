@@ -8,6 +8,8 @@ describe Quandl::Format::Dataset do
     { file: 'mismatched_columns', error: /column_names had 4 columns/ },
     { file: 'mismatched_rows',    error: /had 3 columns/ },
     { file: 'invalid_yaml',       error: /could not find expected ':'/ },
+    { file: 'missing_dashes',     error: /Attribute parse error at line 6 column 1/ },
+    { file: 'missing_dashes',     error: /Data delimiter '-' is missing/ },
   ]
   # run each expectation
   expected_errors.each do |pair|

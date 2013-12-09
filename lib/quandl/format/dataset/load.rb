@@ -78,8 +78,8 @@ class Quandl::Format::Dataset::Load
     def parse_yaml_attributes(node)
       YAML.load( node[:attributes] ).symbolize_keys!
     rescue => e
-      message = "Error: Dataset starting at line #{node[:line]}\n"
-      message += "#{$!}\n"
+      message = "Attribute parse error at line #{ node[:line] + e.line } column #{e.column}. #{e.problem} (#{e.class})\n"
+      message += "WARNING: Data delimiter '-' is missing!\n" unless node[:attributes] =~ /^-/
       message += "--"
       Quandl::Logger.error(message)
       nil
@@ -100,8 +100,9 @@ class Quandl::Format::Dataset::Load
     
     def attribute_format
       /^([a-z0-9_]+): (.+)/
+      # /^((\s+){2}|([a-z0-9_]+:))(.+)?$/
     end
-  
+    
   end
 
 end
