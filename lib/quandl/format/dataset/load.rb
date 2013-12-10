@@ -40,6 +40,7 @@ class Quandl::Format::Dataset::Load
           # have we reached the end of the attributes?
         elsif line == '-'
           # update the section to data
+          nodes[-1][:data_line] = line_index + 1
           section_type = :data
           # skip to the next line
           next
@@ -77,29 +78,43 @@ class Quandl::Format::Dataset::Load
     
     def parse_yaml_attributes(node)
       YAML.load( node[:attributes] ).symbolize_keys!
-    rescue => e
-      message = "Attribute parse error at line #{ node[:line] + e.line } column #{e.column}. #{e.problem} (#{e.class})\n"
-      message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('-')?\n" unless node[:attributes] =~ /^-/
-      message += "--"
-      Quandl::Logger.error(message)
+    rescue => err
+      log_yaml_parse_error(node, err)
       nil
     end
     
     def node_to_dataset(node)
       Quandl::Format::Dataset.new( node[:attributes] )
-    rescue => e
-      message = ''
-      message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
-      message += node[:attributes][:code] + ' '
-      message += "error around line #{node[:line]} \n"
-      message += "#{$!}\n"
-      message += "--"
-      Quandl::Logger.error(message)
-      nil
+    rescue => err
+      log_dataset_error(node, err)
     end
     
     def attribute_format
       /^([a-z0-9_]+): (.+)/
+    end
+    
+    def log_yaml_parse_error(node, err)
+      message = "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n"
+      message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('-')?\n" unless node[:attributes] =~ /^-/
+      message += "--"
+      Quandl::Logger.error(message)
+    end
+    
+    def log_dataset_error( node, err )
+      message = ''
+      message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
+      message += node[:attributes][:code] + ' '
+      # include specific line if available
+      if err.respond_to?(:line)
+        message += "error at line #{node[:data_line].to_i + err.line.to_i}\n"
+      else
+        message += "error around line #{node[:line]}\n"
+      end
+      # include original error
+      message += "#{$!} (#{err.class})\n"
+      message += "--"
+      Quandl::Logger.error(message)
+      nil
     end
     
   end

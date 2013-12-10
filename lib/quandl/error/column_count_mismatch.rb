@@ -1,7 +1,7 @@
 module Quandl
 module Error
   
-  class ColumnCountMismatch < StandardError; end
+  class ColumnCountMismatch < Quandl::Error::Standard; end
   
 end
 end

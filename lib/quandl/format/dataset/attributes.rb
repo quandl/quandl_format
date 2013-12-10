@@ -103,17 +103,17 @@ module Attributes
   private
   
   def raise_row_column_mismatch!(row, index)
-    m = "Unexpected number of columns. #{full_code} data[0] had #{data[0].count} columns, but data[#{index}] had #{row.count} #{row} (ColumnCountMismatch)"
-    raise Quandl::Error::ColumnCountMismatch, m    
+    m = "Unexpected number of points in this row '#{row}'. Expected #{data[0].count} but found #{row.count} based on #{data[0]}"
+    raise Quandl::Error::ColumnCountMismatch.new( row: row, line: index, context: 'data_rows_should_have_equal_columns!' ), m
   end
   
   def raise_column_count_mismatch!(row, index)
-    m = "Unexpected number of columns. column_names had #{column_names.count} columns, but data[#{index}] had #{row.count} #{row} (ColumnCountMismatch)"
-    raise Quandl::Error::ColumnCountMismatch, m
+    m = "Unexpected number of points in this row '#{row}'. Expected #{column_names.count} but found #{row.count} based on #{column_names}"
+    raise Quandl::Error::ColumnCountMismatch.new( row: row, line: index+1, context: 'data_row_count_should_match_column_count!' ), m
   end
   
   def raise_unknown_attribute_error!(key)
-    m = "Unknown Field '#{key}' valid fields are: #{self.class.attribute_names.join(', ')} (UnknownAttribute)"
+    m = "Unknown Field '#{key}' valid fields are: #{self.class.attribute_names.join(', ')}"
     raise Quandl::Error::UnknownAttribute, m
   end
 
