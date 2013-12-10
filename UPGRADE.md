@@ -1,3 +1,9 @@
+## 0.1.6
+
+* refactor errors to include specific line numbers
+* revise errors to be more human friendly
+
+
 ## 0.1.5
 
 * Replace Quandl::Babelfish::Data with Quandl::Data, now that QD does intelligent cleaning.
