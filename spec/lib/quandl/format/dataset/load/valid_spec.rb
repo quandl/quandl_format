@@ -40,4 +40,22 @@ describe Quandl::Format::Dataset do
     end
   end
   
+  context "tabular.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['tabular'] ) }
+    
+    it{ should be_a Array }
+    its(:count){ should eq 1 }
+    
+    describe "#first" do
+      subject{ data.first }
+      its(:code){ should eq 'TABULAR' }
+      its(:column_names){ should eq ['Date','First','Second','Third','Fourth']}
+      its(:data){ should eq [
+        ['2013-12-31',10.0,20.0,30.0,40.0],
+        ['2012-12-31',20.0,30.0,40.0,50.0],
+        ['2011-12-31',30.0,40.0,50.0,60.0],
+      ]}
+    end
+  end
+  
 end
