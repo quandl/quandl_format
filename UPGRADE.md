@@ -1,3 +1,8 @@
+## 0.1.7
+
+* Accept tabular data
+
+
 ## 0.1.6
 
 * refactor errors to include specific line numbers
