@@ -51,9 +51,9 @@ describe Quandl::Format::Dataset do
       its(:code){ should eq 'TABULAR' }
       its(:column_names){ should eq ['Date','First','Second','Third','Fourth']}
       its(:data){ should eq [
-        ['2013-12-31',10.0,20.0,30.0,40.0],
-        ['2012-12-31',20.0,30.0,40.0,50.0],
-        ['2011-12-31',30.0,40.0,50.0,60.0],
+        [Date.parse('2013-12-31'),10.0,20.0,30.0,40.0],
+        [Date.parse('2012-12-31'),20.0,30.0,40.0,50.0],
+        [Date.parse('2011-12-31'),30.0,40.0,50.0,60.0],
       ]}
     end
   end

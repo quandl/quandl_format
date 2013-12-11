@@ -60,7 +60,7 @@ class Quandl::Format::Dataset::Load
         # we cant continue unless attributes are present
         next if node[:attributes].blank?
         # parse data as csv
-        node[:attributes][:data] = CSV.parse(node[:data])
+        node[:attributes][:data] = Quandl::Data::Format.csv_to_array(node[:data])
         # onwards
         output << node
       end
