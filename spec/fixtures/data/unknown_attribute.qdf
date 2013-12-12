@@ -1,4 +1,4 @@
-code: "BLAKE_TEST_1"
+code: "UNKNOWN_ATTRIBUTE_CODE"
 name: "A new title"
 this_attribute_does_not_exist: "Why is this here?"
 description: "The description Date, Open, High"

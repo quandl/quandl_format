@@ -1,80 +1,113 @@
 class Quandl::Format::Dataset::Load
   
-  SECTION_DELIMITER = '-'
+  SYNTAX = {
+    comment:          '#',
+    data:             '-',
+    attribute:        /^([a-z0-9_]+): (.+)/,
+  }
   
   class << self
     
+    def each_in_file(path, &block)
+      each_line( File.open(path, "r"), &block )
+    end
+    
+    def each_line(interface, &block)
+      node = new_node
+      # for each file line
+      interface.each_line do |line|
+        # process line
+        node = process_line(line, node, &block)
+      end
+      process_tail(node, &block)      
+    end
+    
     def file(path)
-      string(File.read(path).strip)
+      string( File.read(path) )
     end
-  
+    
     def string(input)
-      nodes = parse_string(input)
-      nodes = parse_yaml_and_csv(nodes)
-      nodes = nodes_to_datasets(nodes)
-      nodes
-    end
-    
-    protected
-    
-    def parse_string(input)
-      nodes = []
-      section_type = :data
-      line_index = 0
-      input.each_line do |rline|
-        # track current line index
-        line_index += 1
-        # strip whitespace
-        line = rline.strip.rstrip
-        # ignore comments and blank lines
-        next if line[0] == '#' || line.blank?
-        
-        # are we looking at an attribute?
-        if line =~ attribute_format
-          # if we are leaving the data section
-          # then this is the start of a new node
-          nodes << { attributes: '', data: '', line: line_index } if section_type == :data
-          # update the section to attributes
-          section_type = :attributes
-          
-          # have we reached the end of the attributes?
-        elsif line == '-'
-          # update the section to data
-          nodes[-1][:data_line] = line_index + 1
-          section_type = :data
-          # skip to the next line
-          next
-        end
-        # add the line to it's section in the current node.
-        # YAML must include whitespace
-        nodes[-1][section_type] += (section_type == :data) ? "#{line}\n" : rline
-      end
-      nodes
-    end
-    
-    def parse_yaml_and_csv(nodes)
-      output = []
-      nodes.each do |node|
-        # parse attrs as yaml
-        node[:attributes] = parse_yaml_attributes(node)
-        # we cant continue unless attributes are present
-        next if node[:attributes].blank?
-        # parse data as csv
-        node[:attributes][:data] = Quandl::Data::Format.csv_to_array(node[:data])
-        # onwards
-        output << node
-      end
-      output
-    end
-    
-    def nodes_to_datasets(nodes)
+      # prepare to collect all datasets
       datasets = []
-      nodes.each do |node|
-        dataset = node_to_dataset(node)
-        datasets << dataset if dataset
+      # initialize blank node
+      node = new_node
+      # for each line
+      input.each_line do |line|
+        # process each line when encountering dataset append it to datasets
+        node = process_line( line, node ){|d| datasets << d }
       end
+      # signify end
+      process_tail(node){|d| datasets << d }
+      # return datasets
       datasets
     end
+    
+    def new_node(line=0)
+      { line: line, section: :attributes, data: '', attributes: '', data_line: 0 }
+    end
+    
+    def process_tail(node, &block)
+      # signify end
+      process_line('-', node, &block)
+      process_line('tail: end', node, &block)
+    end
+    
+    def process_line(rline, node, &block)
+      # increment node line
+      node[:line] += 1
+      # strip whitespace
+      line = rline.strip.rstrip
+      # skip comments and blank lines
+      return node if line[0] == SYNTAX[:comment] || line.blank?
+      # looking at an attribute?
+      if line =~ SYNTAX[:attribute]
+        # exiting data section?
+        if node[:section] == :data
+          # we've reached the end of a node
+          # send it to the server
+          process_node(node, &block)
+          # start a new node while retaining current line line
+          node = new_node( node[:line] )
+        end
+        # update the node's section
+        node[:section] = :attributes
+      # entering the data section?
+      elsif line[0] == SYNTAX[:data]
+        # update the node
+        node[:data_line] = node[:line] + 1
+        node[:section] = :data
+        # skip to the next line
+        return node
+      end
+      # append the line to the requested section
+      node[ node[:section] ] += ( node[:section] == :data ) ? "#{line}\n" : rline
+      # return the updated node
+      node
+    end
+    
+    def process_node(node, &block)
+      node = parse_node(node)
+      # fail on errored node
+      return false if node == false
+      # convert node to dataset
+      dataset = convert_node_to_dataset(node)
+      # do whatever we need to do with the node
+      block.call( dataset ) unless dataset.nil?
+      # success
+      true
+    end
+    
+    def parse_node(node)
+      # parse attrs as yaml
+      node[:attributes] = parse_yaml_attributes(node)
+      # we cant continue unless attributes are present
+      return false if node[:attributes].blank?
+      # parse data as csv
+      node[:data] = Quandl::Data::Format.csv_to_array(node[:data])
+      node
+    end
+  
+    protected
     
     def parse_yaml_attributes(node)
       YAML.load( node[:attributes] ).symbolize_keys!
@@ -83,19 +116,18 @@ class Quandl::Format::Dataset::Load
       nil
     end
     
-    def node_to_dataset(node)
-      Quandl::Format::Dataset.new( node[:attributes] )
+    def convert_node_to_dataset(node)
+      dataset = Quandl::Format::Dataset.new( node[:attributes] )
+      dataset.data = node[:data]
+      dataset
     rescue => err
       log_dataset_error(node, err)
-    end
-    
-    def attribute_format
-      /^([a-z0-9_]+): (.+)/
+      nil
     end
     
     def log_yaml_parse_error(node, err)
       message = "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n"
-      message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('-')?\n" unless node[:attributes] =~ /^-/
+      message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('#{SYNTAX[:data]}')?\n" unless node[:attributes] =~ /^-/
       message += "--"
       Quandl::Logger.error(message)
     end
@@ -114,7 +146,6 @@ class Quandl::Format::Dataset::Load
       message += "#{$!} (#{err.class})\n"
       message += "--"
       Quandl::Logger.error(message)
-      nil
     end
     
   end

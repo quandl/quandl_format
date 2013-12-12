@@ -15,15 +15,23 @@ class Dataset
   include Quandl::Format::Dataset::Client
 
   class << self
+    
+    def each_line(interface, &block)
+      Load.each_line(interface, &block)
+    end
+    
+    def each_in_file(path, &block)
+      Load.each_in_file(path, &block)
+    end
 
     def load(input)
       Load.string(input)
     end
 
     def load_from_file(path)
-      Load.file(path)
+      Load.string(File.read(path))
     end
-
+    
     def dump(datasets)
       Dump.collection(datasets)
     end
