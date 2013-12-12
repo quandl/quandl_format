@@ -1,3 +1,8 @@
+## 0.1.8
+
+* add Quandl::Format::Dataset.each_line to upload dataset's line by line as they become availabe from whichever interface. Allows ruby GC to operate and avoid having 20k datasets in memory ...
+
+
 ## 0.1.7
 
 * Accept tabular data
