@@ -113,7 +113,7 @@ module Attributes
   end
   
   def raise_unknown_attribute_error!(key)
-    m = "Unknown Field '#{key}' valid fields are: #{self.class.attribute_names.join(', ')}"
+    m = "Unknown Field '#{key}' valid fields are: #{self.class.meta_attribute_names.join(', ')}"
     raise Quandl::Error::UnknownAttribute, m
   end
 
