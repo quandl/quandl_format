@@ -79,7 +79,7 @@ module Attributes
   end
 
   def attributes
-    self.class.attribute_names.inject({}){|m,k| m[k] = self.send(k); m }
+    self.class.attribute_names.inject({}){|m,k| m[k] = self.send(k) unless self.send(k).nil?; m }
   end
 
   protected
