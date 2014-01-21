@@ -1,3 +1,10 @@
+## 0.2.0
+
+* Update Quandl::Client to gain access to Quandl::Pattern
+* Errors dont output internal attributes in error messages
+* Display more information around YAML Parse Failures
+
+
 ## 0.1.8
 
 * add Quandl::Format::Dataset.each_line to upload dataset's line by line as they become availabe from whichever interface. Allows ruby GC to operate and avoid having 20k datasets in memory ...

@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "guard-rspec"
   
   s.add_runtime_dependency "quandl_babelfish", "~> 0.0"
-  s.add_runtime_dependency "quandl_client", "~> 2.3"
+  s.add_runtime_dependency "quandl_client", "~> 2.4"
   
 end
