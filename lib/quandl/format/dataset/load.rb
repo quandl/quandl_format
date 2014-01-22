@@ -111,7 +111,7 @@ class Quandl::Format::Dataset::Load
     
     def parse_yaml_attributes(node)
       YAML.load( node[:attributes] ).symbolize_keys!
-    rescue => err
+    rescue Exception => err
       log_yaml_parse_error(node, err)
       nil
     end
@@ -120,7 +120,7 @@ class Quandl::Format::Dataset::Load
       dataset = Quandl::Format::Dataset.new( node[:attributes] )
       dataset.data = node[:data]
       dataset
-    rescue => err
+    rescue Exception => err
       log_dataset_error(node, err)
       nil
     end
