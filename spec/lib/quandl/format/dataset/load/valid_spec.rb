@@ -30,8 +30,8 @@ describe Quandl::Format::Dataset do
       its(:code){ should eq 'BLAKE_TEST_1' }
       its(:name){ should eq 'A new title' }
       its(:description){ should eq 'The description Date, Open, High'}
-      its(:column_names){ should be_nil }
-      its(:data){ should be_nil }
+      its(:column_names){ should eq [] }
+      its(:data){ should eq [] }
     end
   end
   
