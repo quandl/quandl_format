@@ -1,3 +1,9 @@
+## 0.2.3
+
+* QUGC-35 Pure Meta Data Send or Update
+* remove babelfish from gemspec
+
+
 ## 0.2.0
 
 * Update Quandl::Client to gain access to Quandl::Pattern
