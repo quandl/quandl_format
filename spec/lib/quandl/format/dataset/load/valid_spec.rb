@@ -18,6 +18,22 @@ describe Quandl::Format::Dataset do
       its(:data){ should eq Quandl::Data.new([['2013-11-22','1252.0','454.95','448.2','450.0','450.0','1354405.0','6099.41'],['2013-11-21','452.25','457.75','449.1','451.2','451.0','218881.0','992.94']]) }
     end
   end
+
+  context "metadata_only.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['metadata_only'] ) }
+    
+    it{ should be_a Array }
+    its(:count){ should eq 3 }
+    
+    describe "#first" do
+      subject{ data.first }
+      its(:code){ should eq 'BLAKE_TEST_1' }
+      its(:name){ should eq 'A new title' }
+      its(:description){ should eq 'The description Date, Open, High'}
+      its(:column_names){ should be_nil }
+      its(:data){ should be_nil }
+    end
+  end
   
   context "annual.qdf" do
     let(:data){ Quandl::Format::Dataset.load( fixtures_data['annual'] ) }
