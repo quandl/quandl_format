@@ -51,7 +51,7 @@ module Attributes
   end
 
   def full_code
-    [source_code, code].join('/')
+    [source_code, code].collect{|v| v.blank? ? nil : v }.compact.join('/')
   end
 
   def description=(value)
@@ -64,6 +64,10 @@ module Attributes
     data_row_count_should_match_column_count!
     data_rows_should_have_equal_columns!
     @data
+  end
+  
+  def column_names
+    @column_names ||= []
   end
 
   def column_names=(names)
@@ -85,6 +89,7 @@ module Attributes
   protected
   
   def data_rows_should_have_equal_columns!
+    return if data.blank?
     row_count = data[0].count
     data.each_with_index do |row, index|
       raise_row_column_mismatch!(row, index) unless row.count == row_count

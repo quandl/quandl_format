@@ -54,7 +54,7 @@ module Client
   
   def find_or_build_client
     @client = Quandl::Client::Dataset.find(full_code)
-    @client = Quandl::Client::Dataset.new unless @client.exists?
+    @client = Quandl::Client::Dataset.new unless @client.try(:exists?)
     @client
   end
   
