@@ -1,3 +1,9 @@
+## 0.2.4
+
+* assigning data will force to_table if possible
+* QUGC-38 Dataset#column_names should be read before data
+* permit setting frequency in quandl format
+
 ## 0.2.3
 
 * QUGC-35 Pure Meta Data Send or Update
