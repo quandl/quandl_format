@@ -9,7 +9,7 @@ module Attributes
   module ClassMethods
 
     META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :reference_url, :frequency
-    DATA_ATTRIBUTES = :data, :column_names
+    DATA_ATTRIBUTES = :column_names, :data
 
     def attribute_names
       @attribute_names ||= meta_attribute_names + data_attribute_names
@@ -59,6 +59,7 @@ module Attributes
   end
 
   def data=(rows)
+    rows = rows.to_table if rows.respond_to?(:to_table)
     @data = Quandl::Data.new(rows).to_date
     self.column_names = @data.headers if @data.headers.present?
     data_row_count_should_match_column_count!
