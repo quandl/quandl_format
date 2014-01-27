@@ -9,7 +9,7 @@ module Attributes
   module ClassMethods
 
     META_ATTRIBUTES = :source_code, :code, :name, :description, :private, :reference_url, :frequency
-    DATA_ATTRIBUTES = :column_names, :data
+    DATA_ATTRIBUTES = :data, :column_names
 
     def attribute_names
       @attribute_names ||= meta_attribute_names + data_attribute_names

@@ -57,6 +57,7 @@ description: |-
    This is the second line.
 private: false
 reference_url: http://test.com/
+frequency: 
 -
 Date,Value,High,Low
 2013-11-20,9.99,11.0,14.0
