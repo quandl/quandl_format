@@ -1,3 +1,9 @@
+## 0.2.5
+
+* QUGC-40 respond with error status if errors are blank
+* QUGC-37 field names should be case insensitive
+
+
 ## 0.2.4
 
 * assigning data will force to_table if possible
