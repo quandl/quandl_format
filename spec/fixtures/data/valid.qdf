@@ -1,5 +1,5 @@
-code: "BLAKE_TEST_1"
-name: "A new title"
+CODE: "BLAKE_TEST_1"
+NAME: "A new title"
 description: "The description Date, Open, High"
 private: false
 -

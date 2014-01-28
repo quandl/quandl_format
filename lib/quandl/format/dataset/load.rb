@@ -110,7 +110,11 @@ class Quandl::Format::Dataset::Load
     protected
     
     def parse_yaml_attributes(node)
-      YAML.load( node[:attributes] ).symbolize_keys!
+      attrs = {}
+      YAML.load( node[:attributes] ).symbolize_keys!.each do |key, value|
+        attrs[key.to_s.downcase.to_sym] = value
+      end
+      attrs
     rescue Exception => err
       log_yaml_parse_error(node, err)
       nil
