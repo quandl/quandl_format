@@ -6,9 +6,9 @@ module Client
   extend ActiveSupport::Concern
   
   def human_errors
-    return if errors.blank?
-    m = "#{client.full_url} #{client.status}\n"
-    m += "  errors: \n"
+    m = "#{client.human_status} \t #{client.full_url}"
+    return m if errors.blank?
+    m += "\n  errors: \n"
     m += errors.collect do |error_type, messages|
       next human_error(error_type, messages)  unless messages.is_a?(Hash)
       messages.collect{|n,m| human_error(n, m) }
