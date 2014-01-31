@@ -122,7 +122,7 @@ class Quandl::Format::Dataset::Load
     
     def convert_node_to_dataset(node)
       dataset = Quandl::Format::Dataset.new( node[:attributes] )
-      dataset.data = node[:data]
+      dataset.data = node[:data] if node[:data].present?
       dataset
     rescue Exception => err
       log_dataset_error(node, err)
