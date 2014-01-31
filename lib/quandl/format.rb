@@ -3,6 +3,7 @@ require 'quandl/logger'
 require "quandl/format/version"
 
 require 'csv'
+require 'yaml'
 
 require 'quandl/client'
 

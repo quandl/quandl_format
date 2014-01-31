@@ -18,7 +18,7 @@ describe Quandl::Client::Dataset do
   subject{ Quandl::Client::Dataset.new( attributes ) }
   
   it{ should respond_to :to_qdf }
-  
+
   its(:to_qdf){ should eq Quandl::Format::Dataset.new(attributes).to_qdf }
   
 end
