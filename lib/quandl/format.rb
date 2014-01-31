@@ -5,7 +5,6 @@ require "quandl/format/version"
 require 'csv'
 
 require 'quandl/client'
-require 'quandl/babelfish'
 
 require "active_support"
 require "active_support/inflector"
