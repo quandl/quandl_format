@@ -1,3 +1,9 @@
+## 0.2.6
+
+* require yaml
+* dont assign data if data is not present
+
+
 ## 0.2.5
 
 * QUGC-40 respond with error status if errors are blank
