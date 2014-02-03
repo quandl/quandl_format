@@ -5,6 +5,12 @@ describe Quandl::Format::Dataset::Load do
   
   let(:format){ qdf_format }
   
+  describe "junk" do
+    let(:collection){ Quandl::Format::Dataset::Load.string('asdf') }
+    subject{ collection }
+    its(:count){ should eq 0 }
+  end
+  
   describe ".file" do
     subject{ Quandl::Format::Dataset::Load.file("spec/fixtures/data/valid.qdf") }
     its(:count){ should eq 3 }

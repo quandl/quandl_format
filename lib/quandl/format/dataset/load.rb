@@ -130,9 +130,10 @@ class Quandl::Format::Dataset::Load
     end
     
     def log_yaml_parse_error(node, err)
-      message = "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n"
+      message = ""
+      message += "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n" if node.has_key?(:line) && err.respond_to?(:line)
       message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('#{SYNTAX[:data]}')?\n" unless node[:attributes] =~ /^-/
-      message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" rescue nil
+      message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" if err.respond_to?(:line)
       message += "--"
       Quandl::Logger.error(message)
     end
