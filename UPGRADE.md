@@ -1,3 +1,8 @@
+## 0.2.7
+
+* parsing junk string should fail gracefully
+
+
 ## 0.2.6
 
 * require yaml
