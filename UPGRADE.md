@@ -1,3 +1,9 @@
+## 0.2.8
+
+* QUGC-57 validation at an inappropriate time; move validations to Quandl::Client
+* more accurate error messages and line numbers
+
+
 ## 0.2.7
 
 * parsing junk string should fail gracefully
