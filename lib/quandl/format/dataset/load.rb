@@ -19,7 +19,7 @@ class Quandl::Format::Dataset::Load
         # process line
         node = process_line(line, node, &block)
       end
-      process_tail(node, &block)      
+      process_tail(node, &block)
     end
     
     def file(path)
@@ -43,7 +43,7 @@ class Quandl::Format::Dataset::Load
     end
     
     def new_node(line=0)
-      { line: line, section: :attributes, data: '', attributes: '', data_line: 0 }
+      { line: line, section: :attributes, data: '', attributes: '', data_line: 0, offset: line==0 ? 0 : line-1 }
     end
     
     def process_tail(node, &block)
@@ -58,7 +58,10 @@ class Quandl::Format::Dataset::Load
       # strip whitespace
       line = rline.strip.rstrip
       # skip comments and blank lines
-      return node if line[0] == SYNTAX[:comment] || line.blank?
+      if line[0] == SYNTAX[:comment] || line.blank?
+        node[:attributes] += "\n" if node[:section] == :attributes
+        return node
+      end
       # looking at an attribute?
       if line =~ SYNTAX[:attribute]
         # exiting data section?
@@ -111,7 +114,9 @@ class Quandl::Format::Dataset::Load
     
     def parse_yaml_attributes(node)
       attrs = {}
-      YAML.load( node[:attributes] ).symbolize_keys!.each do |key, value|
+      attributes = YAML.load( node[:attributes] )
+      raise 'Unparsable input'  unless attributes.is_a? Hash
+      attributes.symbolize_keys!.each do |key, value|
         attrs[key.to_s.downcase.to_sym] = value
       end
       attrs
@@ -131,9 +136,21 @@ class Quandl::Format::Dataset::Load
     
     def log_yaml_parse_error(node, err)
       message = ""
-      message += "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n" if node.has_key?(:line) && err.respond_to?(:line)
-      message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('#{SYNTAX[:data]}')?\n" unless node[:attributes] =~ /^-/
-      message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" if err.respond_to?(:line)
+      if err.message == 'Unparsable input'
+        message = "Input data is unparsable.  Are you missing a colon (:) or a space after a colon?\n"
+      elsif err.is_a?(Psych::SyntaxError)
+        if err.problem =~ /mapping values are not allowed in this context/
+          message = "Syntax error before line #{1+node[:offset] + err.line}.  Are you missing a colon (:) or a space after a colon?\n"
+        else
+          message += "Error parsing metadata. #{err.problem.capitalize} on line #{node[:offset] + err.line}\n"
+          if err.problem =~ /expected ':'/
+            message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('#{SYNTAX[:data]}')?\n"
+          end
+        end
+      else
+        message += "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n" if node.has_key?(:line) && err.respond_to?(:line)
+        message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" if err.respond_to?(:line)
+      end
       message += "--"
       Quandl::Logger.error(message)
     end
