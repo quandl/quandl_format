@@ -14,8 +14,11 @@ describe Quandl::Format::Dataset do
   it_should_expect_error 'unknown_attribute',  /this_attribute_does_not_exist/
   it_should_expect_error 'mismatched_columns', /Expected 4 but found 5/
   it_should_expect_error 'mismatched_rows',    /Expected 3 but found 4/
-  it_should_expect_error 'invalid_yaml',       /could not find expected ':'/
-  it_should_expect_error 'missing_dashes',     /Attribute parse error at line 28 column 1/
+  it_should_expect_error 'invalid_yaml',       /Could not find expected ':'/
+  it_should_expect_error 'missing_dashes',     /Could not find expected ':' on line 22/
   it_should_expect_error 'missing_dashes',     /Did you forget to delimit the meta data section/
+  it_should_expect_error 'missing_colon',     /Are you missing a colon/
+  it_should_expect_error 'missing_colon2',     /Could not find expected ':' on line 3/
+  it_should_expect_error 'missing_space',     /Are you missing a colon/
   
 end
