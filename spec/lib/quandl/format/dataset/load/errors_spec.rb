@@ -15,8 +15,9 @@ describe Quandl::Format::Dataset do
   it_should_expect_error 'invalid_yaml',       /Could not find expected ':'/
   it_should_expect_error 'missing_dashes',     /Could not find expected ':' on line 22/
   it_should_expect_error 'missing_dashes',     /Did you forget to delimit the meta data section/
-  it_should_expect_error 'missing_colon',     /Are you missing a colon/
+  it_should_expect_error 'missing_colon',     /forget a colon.+code foo/m
   it_should_expect_error 'missing_colon2',     /Could not find expected ':' on line 3/
   it_should_expect_error 'missing_space',     /Are you missing a colon/
+  it_should_expect_error 'extra_colon',       /an illegal colon/
   
 end

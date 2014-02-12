@@ -140,7 +140,13 @@ class Quandl::Format::Dataset::Load
         message = "Input data is unparsable.  Are you missing a colon (:) or a space after a colon?\n"
       elsif err.is_a?(Psych::SyntaxError)
         if err.problem =~ /mapping values are not allowed in this context/
-          message = "Syntax error before line #{1+node[:offset] + err.line}.  Are you missing a colon (:) or a space after a colon?\n"
+          message = "Syntax error *before* line #{1+node[:offset] + err.line}.\n"
+          if node[:attributes] =~ /:.+:/ # he probably has a colon in a field.
+            message += "You might have an illegal colon (:) in one of your fields.  If so, use quotes.\n"
+          elsif node[:attributes] =~ /^([^:]+)$/ # he forgot the colon completely
+            message += "Did you forget a colon on this line:\n"
+            message += "#{$1}\n"
+          end
         else
           message += "Error parsing metadata. #{err.problem.capitalize} on line #{node[:offset] + err.line}\n"
           if err.problem =~ /expected ':'/
