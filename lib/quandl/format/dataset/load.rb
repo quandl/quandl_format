@@ -138,7 +138,7 @@ class Quandl::Format::Dataset::Load
       message = ""
       if err.message == 'Unparsable input'
         message = "Input data is unparsable.  Are you missing a colon (:) or a space after a colon?\n"
-      elsif err.is_a?(Psych::SyntaxError)
+      elsif err.is_a?(Psych::SyntaxError) && err.respond_to?(:problem)
         if err.problem =~ /mapping values are not allowed in this context/
           message = "Syntax error *before* line #{1+node[:offset] + err.line}.\n"
           if node[:attributes] =~ /:.+:/ # he probably has a colon in a field.
@@ -153,6 +153,8 @@ class Quandl::Format::Dataset::Load
             message += "Did you forget to delimit the meta data section from the data section with a one or more dashes ('#{SYNTAX[:data]}')?\n"
           end
         end
+      elsif err.is_a?(Psych::SyntaxError)
+        message = err.to_s + "\n" + node[:attributes]
       else
         message += "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n" if node.has_key?(:line) && err.respond_to?(:line)
         message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" if err.respond_to?(:line)
