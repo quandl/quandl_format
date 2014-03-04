@@ -59,11 +59,10 @@ module Attributes
   end
 
   def data=(rows)
-    @data = rows
-    # rows = rows.to_table if rows.respond_to?(:to_table)
-    # @data = Quandl::Data.new(rows)
-    # self.column_names = @data.headers if @data.valid? && @data.headers.present?
-    # @data
+    rows = rows.to_table if rows.respond_to?(:to_table)
+    @data = Quandl::Data.new(rows)
+    self.column_names = @data.headers if @data.valid? && @data.headers.present?
+    @data
   end
   
   def column_names

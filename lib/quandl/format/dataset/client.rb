@@ -8,8 +8,9 @@ module Client
   included do
     include ActiveModel::Validations
     
-    # validate :data_should_be_valid!
+    validate :data_should_be_valid!
     validate :client_should_be_valid!
+    
   end
   
   def human_errors
@@ -55,7 +56,6 @@ module Client
   end
   
   def client_should_be_valid!
-    assign_client_attributes
     if !client.valid_with_server?
       client.errors.each{|err, value| self.errors.add( err, value ) }
       return false 
@@ -63,13 +63,10 @@ module Client
     true
   end
   
-  def assign_client_attributes
-    client.assign_attributes(attributes)
-  end
-  
   def find_or_build_client
-    @client = Quandl::Client::Dataset.find(full_code)
+    @client ||= Quandl::Client::Dataset.find(full_code)
     @client = Quandl::Client::Dataset.new unless @client.try(:exists?)
+    @client.assign_attributes(attributes)
     @client
   end
   
