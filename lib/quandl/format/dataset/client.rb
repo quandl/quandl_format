@@ -8,7 +8,6 @@ module Client
   included do
     include ActiveModel::Validations
     
-    validate :data_should_be_valid!
     validate :client_should_be_valid!
     
   end
@@ -46,14 +45,6 @@ module Client
   
   
   protected
-  
-  def data_should_be_valid!
-    if @data.respond_to?(:valid?) && !data.valid?
-      data.errors.each{|err, value| self.errors.add( err, value ) }
-      return false
-    end
-    true
-  end
   
   def client_should_be_valid!
     if !client.valid_with_server?

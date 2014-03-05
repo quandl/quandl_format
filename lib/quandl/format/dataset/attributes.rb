@@ -61,10 +61,10 @@ module Attributes
   def data=(rows)
     rows = rows.to_table if rows.respond_to?(:to_table)
     @data = Quandl::Data.new(rows)
-    self.column_names = @data.headers if @data.valid? && @data.headers.present?
+    self.column_names = @data.headers if @data.headers.present?
     @data
   end
-  
+
   def column_names
     @column_names ||= []
   end
@@ -84,9 +84,9 @@ module Attributes
   def attributes
     self.class.attribute_names.inject({}){|m,k| m[k] = self.send(k) unless self.send(k).nil?; m }
   end
-  
+
   private
-  
+
   def raise_unknown_attribute_error!(key)
     m = "Unknown Field '#{key}' valid fields are: #{self.class.meta_attribute_names.join(', ')}"
     raise Quandl::Error::UnknownAttribute, m

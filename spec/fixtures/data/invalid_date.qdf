@@ -1,0 +1,12 @@
+code: "BLAKE_8"
+name: "A new title"
+description: "The description Date, Open, High"
+private: false
+-
+Date,Open,High,Low
+2013,10,20,30
+2012,10,40,30
+2011,10,60,30
+2010,10,80,30
+ASDF,10,100,30
+2008,10,120,30
