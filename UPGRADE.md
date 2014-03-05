@@ -1,3 +1,10 @@
+## 0.3.0 
+
+* QUGC-104 bump gems to get onboard with new validations and error handling
+* QUGC-104 Working towards a solution where all dataset validation happens in one place.
+
+
+
 ## 0.2.8
 
 * QUGC-57 validation at an inappropriate time; move validations to Quandl::Client
