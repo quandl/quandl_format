@@ -5,6 +5,13 @@ class Dataset
 module Client
   extend ActiveSupport::Concern
   
+  included do
+    include ActiveModel::Validations
+    
+    validate :client_should_be_valid!
+    
+  end
+  
   def human_errors
     m = "#{client.human_status} \t #{client.full_url}"
     return m if errors.blank?
@@ -28,15 +35,6 @@ module Client
     client.save if valid?
   end
   
-  def errors
-    client.error_messages
-  end
-  
-  def valid?
-    assign_client_attributes
-    client.valid_with_server?
-  end
-  
   def client
     @client ||= find_or_build_client
   end
@@ -48,13 +46,18 @@ module Client
   
   protected
   
-  def assign_client_attributes
-    client.assign_attributes(attributes)
+  def client_should_be_valid!
+    if !client.valid_with_server?
+      client.errors.each{|err, value| self.errors.add( err, value ) }
+      return false 
+    end
+    true
   end
   
   def find_or_build_client
-    @client = Quandl::Client::Dataset.find(full_code)
+    @client ||= Quandl::Client::Dataset.find(full_code)
     @client = Quandl::Client::Dataset.new unless @client.try(:exists?)
+    @client.assign_attributes(attributes)
     @client
   end
   

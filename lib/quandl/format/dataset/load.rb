@@ -89,15 +89,22 @@ class Quandl::Format::Dataset::Load
     end
     
     def process_node(node, &block)
-      node = parse_node(node)
-      # fail on errored node
-      return false if node == false
-      # convert node to dataset
-      dataset = convert_node_to_dataset(node)
-      # do whatever we need to do with the node
-      block.call( dataset ) unless dataset.nil?
-      # success
-      true
+      begin
+        node = parse_node(node)
+        # fail on errored node
+        return false if node == false
+        # convert node to dataset
+        dataset = convert_node_to_dataset(node)
+        # do whatever we need to do with the node
+        block.call( dataset, nil ) unless dataset.nil?
+        # success
+        true
+        
+      rescue Exception => err
+        block.call( nil, err )
+        false
+        
+      end
     end
     
     def parse_node(node)
@@ -121,8 +128,8 @@ class Quandl::Format::Dataset::Load
       end
       attrs
     rescue Exception => err
-      log_yaml_parse_error(node, err)
-      nil
+      m = generate_yaml_parse_error(node, err)
+      raise err, m
     end
     
     def convert_node_to_dataset(node)
@@ -130,11 +137,11 @@ class Quandl::Format::Dataset::Load
       dataset.data = node[:data]
       dataset
     rescue Exception => err
-      log_dataset_error(node, err)
-      nil
+      m = generate_dataset_error(node, err)
+      raise err, m
     end
     
-    def log_yaml_parse_error(node, err)
+    def generate_yaml_parse_error(node, err)
       message = ""
       if err.message == 'Unparsable input'
         message = "Input data is unparsable.  Are you missing a colon (:) or a space after a colon?\n"
@@ -157,13 +164,13 @@ class Quandl::Format::Dataset::Load
         message = err.to_s + "\n" + node[:attributes]
       else
         message += "Attribute parse error at line #{ node[:line] + err.line } column #{err.column}. #{err.problem} (#{err.class})\n" if node.has_key?(:line) && err.respond_to?(:line)
-        message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s + "\n" if err.respond_to?(:line)
+        message += "Encountered error while parsing: \n  " + node[:attributes].split("\n")[err.line - 1].to_s if err.respond_to?(:line)
       end
-      message += "--"
-      Quandl::Logger.error(message)
+      message += "\n"
+      message
     end
     
-    def log_dataset_error( node, err )
+    def generate_dataset_error( node, err )
       message = ''
       message += node[:attributes][:source_code] + '/' if node[:attributes][:source_code].present?
       message += node[:attributes][:code] + ' '
@@ -174,9 +181,9 @@ class Quandl::Format::Dataset::Load
         message += "error around line #{node[:line]}\n"
       end
       # include original error
-      message += "#{$!} (#{err.class})\n"
-      message += "--"
-      Quandl::Logger.error(message)
+      message += "#{$!} (#{err.class})"
+      message += "\n"
+      message
     end
     
   end
