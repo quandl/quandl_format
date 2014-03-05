@@ -15,3 +15,11 @@ end
 task :console do |t,args|
   binding.pry
 end
+
+require 'quandl/utility/rake_tasks'
+Quandl::Utility::Tasks.configure do |c|
+  c.name              = 'quandl_format'
+  c.version_path      = 'VERSION'
+  c.changelog_path    = 'UPGRADE.md'
+  c.changelog_matching  = ['^QUGC','^WIKI']
+end
