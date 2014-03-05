@@ -8,7 +8,7 @@ describe Quandl::Format::Dataset::Load do
   describe "junk" do
     let(:collection){ Quandl::Format::Dataset::Load.string('asdf') }
     subject{ collection }
-    its(:count){ should eq 0 }
+    its(:count){ should eq 1 }
   end
   
   describe ".file" do

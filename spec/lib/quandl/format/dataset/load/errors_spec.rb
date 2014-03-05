@@ -2,40 +2,50 @@
 require 'spec_helper'
 
 describe Quandl::Format::Dataset do
-  
-  let(:file){ self.class.superclass.description }
-  subject{ Quandl::Format::Dataset.load( fixtures_data[file] ).first }
-  
-  def self.it_should_expect_error(file, error)
-    it "#{file}.qdf should error with #{error}" do
-      Quandl::Logger.should_receive(:error).at_least(:once).with(error)
-      Quandl::Format::Dataset.load( fixtures_data[file] )
-    end
-  end
-  
-  it_should_expect_error 'unknown_attribute',   /this_attribute_does_not_exist/
-  it_should_expect_error 'invalid_yaml',        /Could not find expected ':'/
-  it_should_expect_error 'missing_dashes',      /Could not find expected ':' on line 22/
-  it_should_expect_error 'missing_dashes',      /Did you forget to delimit the meta data section/
-  it_should_expect_error 'missing_colon',       /forget a colon.+code foo/m
-  it_should_expect_error 'missing_colon2',      /Could not find expected ':' on line 3/
-  it_should_expect_error 'missing_space',       /Are you missing a colon/
-  
-  context "invalid_data" do
-    before(:each){ subject.valid? }
-    its(:valid?){ should be_false }
-    its('errors.messages'){ should eq({ data: ["Invalid date segments. Expected yyyy-mm-dd received 'Date'"] }) }
-  end
-  
-  context "invalid_date" do
-    before(:each){ subject.valid? }
-    its(:valid?){ should be_false }
     
-    its('errors.messages'){ should eq({ data: ["Invalid date 'ASDF'"] }) }
-    its('client.valid?'){ should be_false }
-    its('client.errors.messages'){ should eq({ data: ["Invalid date 'ASDF'"] }) }
-    its('client.data.valid?'){ should be_false }
-    its('client.data.errors.messages'){ should eq({ data: ["Invalid date 'ASDF'"] }) }
-  end
+  let(:file_path){ 'spec/fixtures/data/' }
+  let(:file){ File.open( File.join(file_path, self.class.superclass.description + '.qdf')) }
+  let(:output){
+    output = []
+    Quandl::Format::Dataset.each_line( file ){|r,e| output << OpenStruct.new( record: r, error: e ) }
+    output
+  }
+  subject{ output.first }
   
+  context "unknown_attribute" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /this_attribute_does_not_exist/ }
+  end
+
+  context "invalid_yaml" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Could not find expected ':'/ }
+  end
+
+  context "illegal_dash" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Could not find expected ':'/ }
+  end
+
+  context "missing_dashes" do
+    subject{ output[2] }
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Could not find expected ':' on line 22/ }
+  end
+
+  context "missing_colon" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Did you forget a colon on this line/ }
+  end
+
+  context "missing_colon2" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Could not find expected ':' on line 3/ }
+  end
+
+  context "missing_space" do
+    its(:record){ should be_nil }
+    its("error.to_s"){ should match /Are you missing a colon/ }
+  end
+ 
 end
