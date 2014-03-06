@@ -1,16 +1,18 @@
-# Purpose
+# Quandl::Format
 
-Load and dump quandl data format.
+## Purpose
+
+Load and dump [quandl data format](http://www.quandl.com/help/toolbelt#Quandl-Flavored-CSV).
 
 
-# Installation
+## Installation
 
 ```ruby
 gem 'quandl_format'
 ```
 
 
-# Configuration
+## Configuration
 
 Add this to your Rakefile:
 
@@ -19,10 +21,10 @@ require 'quandl/format'
 ```
 
 
-# Usage
+## Usage
 
 
-### Load
+#### Load
 
 ```ruby
 # open a file
@@ -36,7 +38,7 @@ end
 ```
 
 
-### Dump
+#### Dump
 
 ```ruby
 # load the file as a collection of Dataset instances
