@@ -47,7 +47,7 @@ module Client
   protected
   
   def client_should_be_valid!
-    if !client.valid_with_server?
+    if !client.valid?
       client.errors.each{|err, value| self.errors.add( err, value ) }
       return false 
     end
