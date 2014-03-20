@@ -16,11 +16,8 @@ require 'quandl/error/column_count_mismatch'
 require 'quandl/error/unknown_attribute'
 
 require 'quandl/format/abstract'
-require 'quandl/format/node'
 require 'quandl/format/dataset'
 require 'quandl/format/superset'
-
-require 'quandl/client/dataset/to_qdf'
 
 module Quandl
   module Format

@@ -1,8 +1,16 @@
+require 'quandl/format/node'
+
 module Quandl
 module Format
 class Abstract
 
   class << self
+    
+    def load(interface)
+      output = []
+      foreach(interface){|n| output << n }
+      output
+    end
     
     def foreach(interface, &block)
       each_line_as_node(interface) do |node|
