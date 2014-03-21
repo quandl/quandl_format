@@ -3,7 +3,7 @@ module Client
 class Superset
   
   def to_qdf
-    attributes.stringify_keys.to_h.to_yaml[4..-1] + "-\n"
+    attributes.stringify_keys.to_hash.to_yaml[4..-1] + "---\n"
   end
   
 end

@@ -1,4 +1,4 @@
-require 'quandl/format/node'
+require 'quandl/format/abstract/node'
 
 module Quandl
 module Format
@@ -20,7 +20,7 @@ class Abstract
     
     def each_line_as_node(interface, &block)
       # initialize an empty node
-      node = Quandl::Format::Node.new( block: block )
+      node = self::Node.new( block: block )
       # for each_line of the interface
       interface.each_line do |line|
         # add the line to the node

@@ -1,8 +1,11 @@
 module Quandl
 module Format
+class Abstract
 class Node
   
-  SYNTAX = {
+  cattr_accessor :syntax, instance_reader: true
+  
+  self.syntax = {
     comment:          '#',
     end_of_node:      '-',
   }
@@ -62,17 +65,23 @@ class Node
   end
   
   def end_of_node?(value)
-    value[0] == SYNTAX[:end_of_node]
+    syntax_matches?( :end_of_node, value )
   end
   
   def comment?(value)
-    value.blank? || value[0] == SYNTAX[:comment]
+    value.blank? || syntax_matches?(:comment, value)
+  end
+  
+  def syntax_matches?(key, value)
+    syn = syntax[key]
+    value.to_s[ 0..(syn.length) ] == syn
   end
   
   def clean(value)
     value.to_s.strip.rstrip
   end
   
+end
 end
 end
 end
