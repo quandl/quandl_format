@@ -34,7 +34,7 @@ class Node
   
   def close
     # pass the node to the block
-    block.call(self)
+    block.call(self) unless lines.blank?
     # return a new node
     self.class.new( line: line, block: block )
   end
