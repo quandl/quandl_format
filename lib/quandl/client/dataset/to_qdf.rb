@@ -4,7 +4,7 @@ module Client
 class Dataset
   
   def to_qdf
-    return unless exists?
+    return if !exists? && status != 0
     Quandl::Format::Dataset.new( qdf_attributes ).to_qdf
   end
   
