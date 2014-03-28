@@ -15,8 +15,9 @@ require "active_support/core_ext/object"
 require 'quandl/error/column_count_mismatch'
 require 'quandl/error/unknown_attribute'
 
+require 'quandl/format/abstract'
 require 'quandl/format/dataset'
-require 'quandl/client/dataset/to_qdf'
+require 'quandl/format/superset'
 
 module Quandl
   module Format

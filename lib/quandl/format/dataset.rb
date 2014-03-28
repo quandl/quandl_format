@@ -1,3 +1,5 @@
+require 'quandl/client/dataset/to_qdf'
+
 module Quandl
 module Format
 
