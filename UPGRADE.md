@@ -1,3 +1,9 @@
+## 0.4.0 
+
+* QUGC-123 Use client#valid? since it has been refactored to check everything.
+
+
+
 ## 0.3.0 
 
 * QUGC-104 bump gems to get onboard with new validations and error handling
