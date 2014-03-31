@@ -1,3 +1,9 @@
+## 0.4.1 
+
+
+
+
+
 ## 0.4.0 
 
 * QUGC-123 Use client#valid? since it has been refactored to check everything.
