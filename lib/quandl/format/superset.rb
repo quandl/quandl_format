@@ -8,7 +8,7 @@ class Superset < Quandl::Format::Abstract
   require 'quandl/format/superset/node'
   
   def self.before_call(node)
-    Quandl::Client::Superset.new( node.as_json )
+    Quandl::Client::Superset.find_or_build( node.as_json )
   end
 
 end
