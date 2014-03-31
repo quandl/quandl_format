@@ -18,7 +18,7 @@ end
 
 require 'quandl/utility/rake_tasks'
 Quandl::Utility::Tasks.configure do |c|
-  c.name              = 'quandl_format'
+  c.name              = 'quandl'
   c.tag_prefix        = 'v'
   c.version_path      = 'VERSION'
   c.changelog_path    = 'UPGRADE.md'
