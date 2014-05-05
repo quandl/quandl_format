@@ -82,6 +82,8 @@ class Quandl::Format::Dataset::Load
         # skip to the next line
         return node
       end
+      # strip extra commas
+      rline = rline.gsub(/,+$/,'') if node[:section] == :attributes
       # append the line to the requested section
       node[ node[:section] ] += ( node[:section] == :data ) ? "#{line}\n" : rline
       # return the updated node

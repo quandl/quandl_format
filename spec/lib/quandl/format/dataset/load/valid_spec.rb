@@ -19,6 +19,21 @@ describe Quandl::Format::Dataset do
     end
   end
 
+  context "QUGC-162.qdf" do
+    let(:data){ Quandl::Format::Dataset.load( fixtures_data['QUGC-162'] ) }
+    
+    it{ should be_a Array }
+    its(:count){ should eq 1 }
+    
+    describe "#first" do
+      subject{ data.first }
+      its(:code){ should eq 'IPDCONGD' }
+      its(:name){ should eq 'Testdata' }
+      its(:description){ should eq 'example indust production upload'}
+      its(:data){ should_not eq [] }
+    end
+  end
+  
   context "metadata_only.qdf" do
     let(:data){ Quandl::Format::Dataset.load( fixtures_data['metadata_only'] ) }
     
