@@ -1,3 +1,9 @@
+## 0.4.3 
+
+* QUGC-162 Strip trailing commas in meta data section
+
+
+
 ## 0.4.2 
 
 
