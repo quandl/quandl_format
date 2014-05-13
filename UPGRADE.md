@@ -1,3 +1,9 @@
+## 0.5.0 
+
+* QUGC-189 bump to quandl_client 2.9
+
+
+
 ## 0.4.3 
 
 * QUGC-162 Strip trailing commas in meta data section
