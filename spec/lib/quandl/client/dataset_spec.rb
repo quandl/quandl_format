@@ -5,7 +5,7 @@ describe Quandl::Client::Dataset do
   
   let(:attributes) { {
     code:             'DATASET_CODE_2',
-    source_code:      'SOURCE_CODE',
+    source_code:      'NSE',
     name:             'Test Dataset Name 2',
     description:      "Here is a description with multiple lines.\n This is the second line.",
     column_names:     ['Date', 'Value', 'High', 'Low'],

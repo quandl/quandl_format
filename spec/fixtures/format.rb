@@ -38,7 +38,7 @@ end
 def qdf_attributes
   {
     code:           'DATASET_CODE_2',
-    source_code:    'SOURCE_CODE',
+    source_code:    'NSE',
     name:           'Test Dataset Name 2',
     description:    "Here is a description with multiple lines.\n This is the second line.",
     column_names:   ['Date', 'Value', 'High', 'Low'],
@@ -49,7 +49,7 @@ def qdf_attributes
 end
 
 def qdf_attributes_to_format
-%Q{source_code: SOURCE_CODE
+%Q{source_code: NSE
 code: DATASET_CODE_2
 name: Test Dataset Name 2
 description: |-

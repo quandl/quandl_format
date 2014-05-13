@@ -8,7 +8,7 @@ describe Quandl::Format::Dataset do
   subject{ Quandl::Format::Dataset.new(attributes) }
   
   its(:code){ should eq 'DATASET_CODE_2' }
-  its(:source_code){ should eq 'SOURCE_CODE' }
+  its(:source_code){ should eq 'NSE' }
   its(:name){ should eq 'Test Dataset Name 2' }
   its(:description){ should eq "Here is a description with multiple lines.\n This is the second line." }
   its(:column_names){ should eq ['Date', 'Value', 'High', 'Low'] }
