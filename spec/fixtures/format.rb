@@ -64,3 +64,48 @@ Date,Value,High,Low
 2013-11-19,10.03,,14.09
 }
 end
+
+def header_attributes
+  {
+      notify:           'user@example.com',
+      token:    'my_token',
+  }
+end
+
+def header_format
+%Q{# just some comment
+=
+notify:           user@example.com
+token:    my_token
+=
+# first dataset
+source_code: NSE
+code: OIL
+name: Oil India Limited
+description: |-
+  Here is a description with multiple lines.
+  This is the second line.
+-
+Date, Value, High, Low
+2013-11-20,9.99,11,14
+2013-11-19,10.03,,14.09
+}
+end
+
+def invalid_header_format
+  %Q{=
+notify -           user@example.com
+token -   my_token
+=
+other dummy info
+}
+end
+
+def invalid_attr_header_format
+  %Q{=
+notify:           user@example.com
+tokennnnnnn:    my_token
+=
+other dummy info
+}
+end
