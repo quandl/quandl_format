@@ -25,7 +25,7 @@ describe Quandl::Format::Dataset do
 
     context "header present" do
       it 'should remove correctly' do
-        expect(Quandl::Format::Header.remove(format)).to eq format.lines[5..-1].join('')
+        expect(Quandl::Format::Header.remove(format)).to eq format.lines[6..-1].join('')
       end
     end
 

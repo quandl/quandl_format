@@ -19,6 +19,10 @@ describe Quandl::Format::Dataset::Load do
         it 'should have correct token' do
           expect(subject.token).to eq 'my_token'
         end
+
+        it 'should have correct "replace"' do
+          expect(subject.replace).to eq 'true'
+        end
       end
 
     end

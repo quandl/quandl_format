@@ -58,6 +58,7 @@ description: |-
 private: false
 reference_url: http://test.com/
 frequency: 
+access: 
 -
 Date,Value,High,Low
 2013-11-20,9.99,11.0,14.0
@@ -67,8 +68,9 @@ end
 
 def header_attributes
   {
-      notify:           'user@example.com',
-      token:    'my_token',
+      notify: 'user@example.com',
+      token: 'my_token',
+      replace: 'true'
   }
 end
 
@@ -77,6 +79,7 @@ def header_format
 =
 notify:           user@example.com
 token:    my_token
+replace: true
 =
 # first dataset
 source_code: NSE
