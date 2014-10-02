@@ -8,7 +8,7 @@ module Quandl
 
         module ClassMethods
 
-          ATTRIBUTES = :notify, :token
+          ATTRIBUTES = :notify, :token, :replace
 
           def attribute_names
             @attribute_names ||= ATTRIBUTES
